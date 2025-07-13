@@ -21,15 +21,16 @@ def add_reminder(user_id, text, datetime_str):
     })
     save_reminders(reminders)
 
-def get_due_reminders(current_datetime, deltamax=0, deltamin=-9999999999999999, save_changes=True):
+def get_due_reminders(current_datetime):
     reminders = load_reminders()
     due = []
     remaining = []
     for r in reminders:
-        if int(datetime.timestamp(current_datetime)) + deltamin <= int(datetime.timestamp(datetime.fromisoformat(r["datetime"]))) <= int(datetime.timestamp(current_datetime)) + deltamax:
+
+        #if int(datetime.timestamp(datetime.fromisoformat(r["datetime"]))) <= int(datetime.timestamp(current_datetime)):
+        if datetime.fromisoformat(r["datetime"]) <= current_datetime:
             due.append(r)
         else:
             remaining.append(r)
-    if save_changes:
-        save_reminders(remaining)
+    save_reminders(remaining)
     return due

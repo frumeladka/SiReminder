@@ -2,8 +2,7 @@ from aiogram import Router, types, F
 from aiogram.filters import Command
 from db import add_reminder
 from datetime import datetime
-from dialogs import START, ADD, TODAY, TOMORROW, WEEK, HELP, SCHEDULE
-from scheduler import send_with_delta
+from dialogs import START, ADD, TODAY, TOMORROW, WEEK, HELP, SCHEDULE, schedule
 
 router = Router()
 
@@ -29,21 +28,19 @@ async def add_handler(message: types.Message):
 
 @router.message(Command("today"))
 async def today_handler(message: types.Message):
-    await message.answer(TODAY, parse_mode="HTML")
-    x = 86400 - int(datetime.now().timestamp()) % 86400
-    await send_with_delta(deltamax=x)
+    await message.answer(TODAY + '\n' + schedule[0], parse_mode="HTML")
+
+
 
 @router.message(Command("tomorrow"))
 async def tomorrow_handler(message: types.Message):
-    await message.answer(TOMORROW, parse_mode="HTML")
-    x = 86400 - int(datetime.now().timestamp()) % 86400
-    await send_with_delta(deltamax=x + 86400, deltamin=x)
+    await message.answer(TOMORROW + '\n' + schedule[1], parse_mode="HTML")
+
 
 @router.message(Command("week"))
 async def week_handler(message: types.Message):
-    await message.answer(WEEK, parse_mode="HTML")
-    x = 86400 - int(datetime.now().timestamp()) % 86400
-    await send_with_delta(deltamax=x + 86400 * 6)
+    await message.answer(WEEK + '\n' + schedule[0] + '\n' + schedule[1] + '\n' + schedule[2] + '\n' + schedule[3] + '\n' + schedule[4] + '\n' + schedule[5] + '\n' + schedule[6], parse_mode="HTML")
+
 
 @router.message(Command("help"))
 async def help_handler(message: types.Message):
