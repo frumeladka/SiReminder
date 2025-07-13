@@ -3,8 +3,6 @@ from datetime import datetime
 from db import get_due_reminders
 from aiogram import Bot
 from config import TOKEN
-from time import sleep
-
 bot = Bot(token=TOKEN)
 
 async def check_reminders():

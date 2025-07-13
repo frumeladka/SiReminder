@@ -1,7 +1,7 @@
 from aiogram import Router, types, F
 from aiogram.filters import Command
 from db import add_reminder
-from datetime import datetime
+from datetime import datetime, timedelta
 from dialogs import START, ADD, TODAY, TOMORROW, WEEK, HELP, SCHEDULE, schedule
 
 router = Router()
@@ -16,6 +16,12 @@ async def add_handler(message: types.Message):
         s = message.text.strip()
         text, datetime_str = s[:-16], s[-16:]
         dt = datetime.fromisoformat(datetime_str.strip())
+        if dt - datetime.now() >= timedelta(hours=1):
+            add_reminder(
+                user_id=message.from_user.id,
+                text=text.strip() + "\nЧерез час",
+                datetime_str=dt - timedelta(hours=1)
+            )
         add_reminder(
             user_id=message.from_user.id,
             text=text.strip(),
